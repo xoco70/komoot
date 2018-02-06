@@ -11,6 +11,9 @@
 |
 */
 
+use Illuminate\Support\Facades\App;
+
 Route::get('/', function () {
+    $s3 = App::make('aws')->createClient('s3');
     return view('welcome');
 });
