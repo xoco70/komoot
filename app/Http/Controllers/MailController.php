@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Jobs\PublishMessage;
 use Faker\Factory;
 use Illuminate\Support\Facades\App;
 
@@ -10,20 +11,8 @@ class MailController extends Controller
 {
     protected function index()
     {
-        $sns = App::make('aws')->createClient('sns');
-        $faker = Factory::create();
-        $rdmSentence = $faker->sentence();
-        try {
-            $result = $sns->publish([
-                'Message' => $rdmSentence,
-                'TopicArn' => 'arn:aws:sns:us-east-1:199539587591:komoot',
-                'Subject' => 'PHP Test',
-            ]);
-            dump($result);
+        PublishMessage::dispatch();
 
-        } catch (\Exception $e) {
-            dd($e);
-        }
     }
 }
 
