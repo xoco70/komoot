@@ -15,6 +15,8 @@ class MailController extends Controller
 
     protected function store(Request $request)
     {
-        Log::info($request->toArray());
+        $hdr = $request->headers->get('X-Amz-Sns-Message-Type');
+        Log::info($request->data);
+        Log::info($hdr);
     }
 }
