@@ -20,7 +20,9 @@ class MailController extends Controller
         $json = $request->getContent();
         $data = json_decode($json, TRUE);
         if ($hdr == 'SubscriptionConfirmation') {
-            return Redirect::to($data['SubscribeURL']);
+            $subscribeUrl = $data['SubscribeURL'];
+            Log::info($subscribeUrl);
+            return Redirect::to($subscribeUrl);
         }elseif ($hdr == 'Notification'){
             Log::info('Notification');
         }
