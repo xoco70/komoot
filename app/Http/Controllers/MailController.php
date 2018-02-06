@@ -22,7 +22,7 @@ class MailController extends Controller
         if ($hdr == 'SubscriptionConfirmation') {
             $subscribeUrl = $data['SubscribeURL'];
             Log::info($subscribeUrl);
-            return Redirect::to($subscribeUrl);
+            return Redirect::away($subscribeUrl);
         }elseif ($hdr == 'Notification'){
             Log::info('Notification');
         }
