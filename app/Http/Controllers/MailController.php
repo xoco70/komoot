@@ -3,12 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\PublishMessage;
+use Illuminate\Http\Request;
 
 class MailController extends Controller
 {
     protected function index()
     {
-        PublishMessage::dispatch('arn:aws:sns:us-east-1:199539587591:komoot');
+        PublishMessage::dispatch();
+    }
 
+    protected function store(Request $request)
+    {
+        dd($request);
     }
 }

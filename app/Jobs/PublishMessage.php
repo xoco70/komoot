@@ -19,9 +19,9 @@ class PublishMessage implements ShouldQueue
      *
      * @return void
      */
-    public function __construct($arn)
+    public function __construct()
     {
-        $this->arn = $arn;
+        $this->arn = env('AWS_SNS_ARN');
     }
 
     /**

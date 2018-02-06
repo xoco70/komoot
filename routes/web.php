@@ -11,9 +11,9 @@
 |
 */
 
-use Illuminate\Support\Facades\App;
 
 Route::get('/', function () {
     return view('welcome');
 });
 Route::get('/sendMail', 'MailController@index');
+Route::get('/confirmSubscription', 'MailController@store');
