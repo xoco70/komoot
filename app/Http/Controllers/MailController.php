@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Jobs\PublishMessage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redirect;
 
 class MailController extends Controller
 {
@@ -18,15 +19,11 @@ class MailController extends Controller
         $hdr = $request->headers->get('X-Amz-Sns-Message-Type');
         $json = $request->getContent();
         $data = json_decode($json, TRUE);
-        $token = $data['Token'];
-
-        if ($hdr == 'SubscriptionConfirmation' && array_key_exists('subscribeURL', $data)) {
-            $subscribeURL = $data['SubscribeURL'];
+        if ($hdr == 'SubscriptionConfirmation') {
+            return Redirect::to($data['SubscribeURL']);
+        }elseif ($hdr == 'Notification'){
+            Log::info('Notification');
         }
-        Log::info($token);
-        Log::info($subscribeURL);
-
-
-
+        return null;
     }
 }
