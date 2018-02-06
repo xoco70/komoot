@@ -11,7 +11,7 @@ class MailController extends Controller
 {
     protected function index()
     {
-        PublishMessage::dispatch();
+        PublishMessage::dispatch('arn:aws:sns:us-east-1:199539587591:komoot');
 
     }
 }
