@@ -25,9 +25,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule
-            ->job(new PublishMessage('arn:aws:sns:us-east-1:199539587591:komoot'))
-            ->everyMinute();
+//        $schedule
+//            ->job(new PublishMessage('arn:aws:sns:us-east-1:199539587591:komoot'))
+//            ->everyMinute();
 
 
         // $schedule->command('inspire')
