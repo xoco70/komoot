@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\PublishMessage;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Http\Request;
 
 class MailController extends Controller
 {
@@ -15,6 +15,6 @@ class MailController extends Controller
 
     protected function store(Request $request)
     {
-        Log::info($request);
+        Log::info($request->toArray());
     }
 }
