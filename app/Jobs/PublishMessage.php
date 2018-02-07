@@ -9,6 +9,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Log;
 
@@ -43,13 +44,14 @@ class PublishMessage implements ShouldQueue
         $faker = Factory::create();
         $record = new Record;
         $record->message = $faker->sentence();
-        $record->timestamp = '';
+        $record->timestamp = Carbon::now()->toDateTimeString();
         $record->email = $faker->randomElement($emails);
         Log::info($record);
         try {
             $result = $sns->publish([
                 'Message' => $record,
                 'TopicArn' => $this->arn,
+                'Subject' => null,
             ]);
         dump($result);
         } catch (\Exception $e) {
