@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Record;
 use Faker\Factory;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
@@ -31,14 +32,23 @@ class PublishMessage implements ShouldQueue
      */
     public function handle()
     {
+        $emails = [
+            "email1@email.com",
+            "email2@email.com",
+            "email3@email.com",
+        ];
+
         $sns = App::make('aws')->createClient('sns');
         $faker = Factory::create();
-        $rdmSentence = $faker->sentence();
+        $record = new Record;
+        $record->message = $faker->sentence();
+        $record->timestamp = '';
+        $record->email = $faker->randomElement($emails);
+        Log::info($record);
         try {
             $result = $sns->publish([
-                'Message' => $rdmSentence,
+                'Message' => $record,
                 'TopicArn' => $this->arn,
-                'Subject' => 'PHP Test',
             ]);
         dump($result);
         } catch (\Exception $e) {

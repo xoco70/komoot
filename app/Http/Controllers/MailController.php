@@ -14,17 +14,25 @@ class MailController extends Controller
         PublishMessage::dispatch();
     }
 
+    /**
+     * HTTPS Endpoint for SNS sub / pub
+     * @param Request $request
+     * @return null
+     */
     protected function store(Request $request)
     {
-        $hdr = $request->headers->get('X-Amz-Sns-Message-Type');
+        $header = $request->headers->get('X-Amz-Sns-Message-Type');
         $json = $request->getContent();
         $data = json_decode($json, TRUE);
-        if ($hdr == 'SubscriptionConfirmation') {
+        if ($header == 'SubscriptionConfirmation') {
             $subscribeUrl = $data['SubscribeURL'];
             Log::info($subscribeUrl);
             return Redirect::away($subscribeUrl);
-        }elseif ($hdr == 'Notification'){
+        }elseif ($header == 'Notification'){
             Log::info('Notification');
+//            $message = $data['Message'];
+//            $message = json_decode($message);
+//            $timestamp = $data['Timestamp'];
         }
         return null;
     }
