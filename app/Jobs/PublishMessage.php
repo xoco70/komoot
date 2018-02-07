@@ -46,16 +46,16 @@ class PublishMessage implements ShouldQueue
         $record->message = $faker->sentence();
         $record->timestamp = Carbon::now()->toDateTimeString();
         $record->email = $faker->randomElement($emails);
-        Log::info($record);
-        try {
-            $result = $sns->publish([
-                'Message' => $record,
-                'TopicArn' => $this->arn,
-                'Subject' => null,
-            ]);
-        dump($result);
-        } catch (\Exception $e) {
-            dd($e);
-        }
+//        Log::info($record);
+//        try {
+////            $result = $sns->publish([
+////                'Message' => $record,
+////                'TopicArn' => $this->arn,
+////                'Subject' => null,
+////            ]);
+//        dump($result);
+//        } catch (\Exception $e) {
+//            dd($e);
+//        }
     }
 }
