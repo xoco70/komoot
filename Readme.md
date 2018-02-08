@@ -1,7 +1,39 @@
 Hourly Digest Mails
 ===================
+ 
+I used PHP / Laravel, as it is the latest tech I have used.
 
-1. Subscribe to HTTPS endpoint: https://docs.aws.amazon.com/sns/latest/dg/SendMessageToHttp.html#SendMessageToHttp.prepare
-2. Now I really think HTTPS in uneeded, we can directly send message in SQS. Then each hour, we process the queue.
+First, I had to send a mail every minute, so I created a SNS Topic, and created a mail subscription.
 
+I created a Laravel Job to publish a message.
+
+Then, I used a Scheduler to run it every minute.
+
+
+https://github.com/xoco70/komoot/blob/master/app/Jobs/PublishMessage.php
+
+```
+ $sns->publish([
+    'Message' => $record,
+    'TopicArn' => $this->arn,
+    'Subject' => null,
+]);
+```
+
+https://github.com/xoco70/komoot/blob/master/app/Console/Kernel.php
+
+```
+$schedule
+    ->job(new PublishMessage())
+    ->everyMinute();
+```
+
+Now I created 2 subscriptions
+ - HTTPS ( OPTIONAL, will be used if needed custom action, like saving messages into DynamoDB )
+ - SQS ( will be used to push message directly in Queue)
+
+ For the HTTPS subscription, I had to follow this doc: https://docs.aws.amazon.com/sns/latest/dg/SendMessageToHttp.html
+ 
+ 
+ 
  
