@@ -9,5 +9,4 @@ class Record extends Model
     public $timestamps = true;
     protected $table = 'records';
     protected $guarded = ['id'];
-    protected $dates = ['timestamp'];
 }
