@@ -12,8 +12,4 @@
 */
 
 
-Route::get('/', function () {
-    return view('welcome');
-});
-Route::get('/sendMail', 'MailController@index');
-Route::post('/confirmSubscription', 'MailController@store');
+Route::post('/confirmSubscription', 'NotificationController@store');

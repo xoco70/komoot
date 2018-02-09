@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\PublishMessage;
+use App\Record;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 
-class MailController extends Controller
+class NotificationController extends Controller
 {
     protected function index()
     {
@@ -30,9 +31,10 @@ class MailController extends Controller
             return Redirect::away($subscribeUrl);
         }elseif ($header == 'Notification'){
             Log::info('Notification');
-//            $message = $data['Message'];
-//            $message = json_decode($message);
-//            $timestamp = $data['Timestamp'];
+            $message = $data['Message'];
+//            $record = json_decode($message);
+//            $record = new Record;
+            Log::info($message);
         }
         return null;
     }
