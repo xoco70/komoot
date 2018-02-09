@@ -18,7 +18,7 @@ class CreateRecordsTable extends Migration
             $table->string('email');
             $table->string('name')->index();
             $table->string('message');
-            $table->timestamps();
+            $table->timestampTz('timestamp');
         });
     }
 
