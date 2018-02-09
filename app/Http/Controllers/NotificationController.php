@@ -25,16 +25,18 @@ class NotificationController extends Controller
         $header = $request->headers->get('X-Amz-Sns-Message-Type');
         $json = $request->getContent();
         $data = json_decode($json, TRUE);
+
         if ($header == 'SubscriptionConfirmation') {
             $subscribeUrl = $data['SubscribeURL'];
-            Log::info($subscribeUrl);
             return Redirect::away($subscribeUrl);
-        }elseif ($header == 'Notification'){
+        } elseif ($header == 'Notification') {
             Log::info('Notification');
-            $message = $data['Message'];
-//            $record = json_decode($message);
-//            $record = new Record;
-            Log::info($message);
+            $arrRecord = json_decode($data['Message']); //
+            $record = new Record;
+            foreach ($arrRecord as $key => $value) {
+                $record->$key = $value;
+            }
+            $record->save();
         }
         return null;
     }
