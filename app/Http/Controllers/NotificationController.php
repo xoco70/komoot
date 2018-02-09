@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\MakeHouryDigest;
 use App\Jobs\PublishMessage;
 use App\Record;
 use Illuminate\Http\Request;
@@ -12,7 +13,7 @@ class NotificationController extends Controller
 {
     protected function index()
     {
-        PublishMessage::dispatch();
+        MakeHouryDigest::dispatch();
     }
 
     /**
