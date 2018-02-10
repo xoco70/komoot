@@ -33,10 +33,11 @@ class MailDigest extends Model
      */
     protected static function buildMessage($recordsByUser)
     {
+
         $name = $recordsByUser->get(0)->name;
         $body = "Hi" . " " . $name . ", your friends are active<br/>";
         $body .= $recordsByUser->map(function ($record) use ($body) {
-            return $record->timestamp . " " . $record->message . "<br/>";
+            return Carbon::parse($record->timestamp)->format('l H:s') . " " . $record->message . "<br/>";
         })->implode('', '<br/>');
         return $body;
     }
