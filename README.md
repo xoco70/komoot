@@ -1,5 +1,34 @@
 Hourly Digest Mails
 ===================
+
+Installation
+------------
+
+```bash
+git clone https://github.com/xoco70/komoot.git
+composer install
+cp .env.example .env
+php artisan key:generate
+```
+Fill the empty values of .env file
+
+
+To be able to run scheduled tasks with laravel, you must add a cron task:
+
+```bash
+ * * * * * php path/to/artisan schedule:run >> /dev/null 2>&1
+ ```
+To be able to consume SQS Queue there is 2 options:
+1. In development, you can do 
+```bash
+ php artisan queue:listen
+ ```
+
+2. In production, you can use Supervisor ( not tested with this work) 
+https://laravel.com/docs/5.5/queues#supervisor-configuration
+
+Now you can change
+
  
 - I used PHP 7.1 / Laravel 5.5, as it is the latest tech I have used.
 - I used SQS to send mail asynchronously
@@ -7,7 +36,8 @@ Hourly Digest Mails
 - I use RDS (MariaDB) to store Data ( DynamoDB should have been better for scaling and speed, but make no difference for this exercise)
 
 
-Here is the general flow:
+General flow:
+------------
 
 1. Create HTTPS SNS Subscription -> Confirm Sub -> Insert each record in DB
 2. Each Hour, We create a Job that format the mails to send, and add a Queue Item
@@ -45,21 +75,8 @@ $schedule
     ->hourlyAt(0);
 ```
 
-Installation
-=============
 
-```bash
-git clone https://github.com/xoco70/komoot.git
-composer install
-cp .env.example .env
-php artisan key:generate
-```
-Fill the empty values of .env file
-
-
-Now you can change
-
-> Note: LIMITS of this work
+> LIMITS
 > - Right now, we send multiple mails in a single Job. It is not the best thing to do in case of failed ones.
 > Ideally, we would like to have 1 mail x job, so if a mail sending is failing, we can retry it independenlty from other mails 
 > - Also, a bad thing in my design is that I send mails async, which is great, because it scales 
