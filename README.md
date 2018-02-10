@@ -74,15 +74,20 @@ $schedule
     ->job(new SendMailDigest())
     ->hourlyAt(0);
 ```
-
-
-> LIMITS
-> - Right now, we send multiple mails in a single Job. It is not the best thing to do in case of failed ones.
-> Ideally, we would like to have 1 mail x job, so if a mail sending is failing, we can retry it independenlty from other mails 
-> - Also, a bad thing in my design is that I send mails async, which is great, because it scales 
-> but I have no garantees that it will be sent each hour exactly.
-> Solution: I should I include a hard reference of my DB Registries  
+**What is good in my method**
+- Flexible, you could easily change 1 hour time range to 3 hours
+- Minimalist, 20L in controller, 30L in model, 10L in Job, and 3 lines in scheduler, it is difficult to have a more syntetic code 
+- Scalable and decoupled, if you have a lot of traffic, you can add more workers to process SQS
  
+
+**What could be better in my method / Posible improvements**
+- One thing that could be improved is that I send mails async, which is great, because it scales, and it is loosely coupled,  
+but I have no garantees that mails will be sent each hour exactly, I can eventually lose some records 
+**Solution**: I should include a hard time reference of the last processed DB Registry  
+
+- Right now, we send multiple mails in a single Job. It is not the best thing to do in case of failed ones.
+Ideally, we would like to have 1 mail x job, so if a mail sending is failing, we can retry it independenlty from other mails 
+**Solution**: Done changing code, but it would put a bit more complexity in code 
  
  
  
