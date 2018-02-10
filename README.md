@@ -50,14 +50,19 @@ Installation
 
 ```bash
 git clone https://github.com/xoco70/komoot.git
+composer install
+cp .env.example .env
+php artisan key:generate
+```
+Fill the empty values of .env file
 
-``` 
 
+Now you can change
 
 > Note: LIMITS of this work
 > - Right now, we send multiple mails in a single Job. It is not the best thing to do in case of failed ones.
 > Ideally, we would like to have 1 mail x job, so if a mail sending is failing, we can retry it independenlty from other mails 
-> - Also, a bad thing in my design ( I will fix it ) is that I send mails async, which is great, because it scales 
+> - Also, a bad thing in my design is that I send mails async, which is great, because it scales 
 > but I have no garantees that it will be sent each hour exactly.
 > Solution: I should I include a hard reference of my DB Registries  
  
