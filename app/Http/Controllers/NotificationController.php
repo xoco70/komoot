@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Jobs\MakeHouryDigest;
-use App\Jobs\PublishMessage;
+use App\Jobs\SendMailDigest;
 use App\Record;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
@@ -13,7 +13,8 @@ class NotificationController extends Controller
 {
     protected function index()
     {
-        MakeHouryDigest::dispatch();
+        dispatch(new SendMailDigest());
+
     }
 
     /**
@@ -39,6 +40,9 @@ class NotificationController extends Controller
             }
             $record->save();
         }
+//        $dynamoDB = App::make('aws')->createClient('DynamoDb');
+
+
         return null;
     }
 }
