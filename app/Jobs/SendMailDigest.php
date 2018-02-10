@@ -2,14 +2,15 @@
 
 namespace App\Jobs;
 
-use App\Record;
+use App\MailDigest;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Mail;
 
-class MakeHouryDigest implements ShouldQueue
+class SendMailDigest implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -31,7 +32,12 @@ class MakeHouryDigest implements ShouldQueue
     public function handle()
     {
         // Get All notification group by email,
-        $records = Record::groupBy('email')->get();
-        dd($records);
+        $digestsByUser = MailDigest::build();
+        foreach ($digestsByUser as $email => $digest) {
+            Mail::send('emails.digest', ['mailBody' => $digest], function ($m) use ($email, $digest) {
+                $m->from('komoot@mayorozco.com', 'Julien Cappiello');
+                $m->to($email)->subject('Your Friends have been active!');
+            });
+        }
     }
 }
