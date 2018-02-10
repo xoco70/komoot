@@ -35,7 +35,7 @@ class MailDigest extends Model
     {
 
         $name = $recordsByUser->get(0)->name;
-        $body = "Hi" . " " . $name . ", your friends are active<br/>";
+        $body = "Hi" . " " . $name . ", your friends are active<br/><br/>";
         $body .= $recordsByUser->map(function ($record) use ($body) {
             return Carbon::parse($record->timestamp)->format('l H:s') . " " . $record->message . "<br/>";
         })->implode('', '<br/>');
