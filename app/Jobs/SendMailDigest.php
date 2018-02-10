@@ -25,17 +25,16 @@ class SendMailDigest implements ShouldQueue
     }
 
     /**
-     * Execute the job.
+     * Send several email with email digest
      *
      * @return void
      */
     public function handle()
     {
-        // Get All notification group by email,
         $digestsByUser = MailDigest::build();
         foreach ($digestsByUser as $email => $digest) {
             Mail::send('emails.digest', ['mailBody' => $digest], function ($m) use ($email, $digest) {
-                $m->from('komoot@mayorozco.com', 'Julien Cappiello');
+                $m->from('julien@cappiello.fr', 'Julien Cappiello');
                 $m->to($email)->subject('Your Friends have been active!');
             });
         }

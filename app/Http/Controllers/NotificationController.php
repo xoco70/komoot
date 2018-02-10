@@ -12,8 +12,8 @@ class NotificationController extends Controller
 {
     protected function index()
     {
+        // For testing purpose only
         dispatch(new SendMailDigest());
-
     }
 
     /**

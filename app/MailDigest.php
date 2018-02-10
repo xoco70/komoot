@@ -33,7 +33,6 @@ class MailDigest extends Model
      */
     protected static function buildMessage($recordsByUser)
     {
-
         $name = $recordsByUser->get(0)->name;
         $body = "Hi" . " " . $name . ", your friends are active<br/><br/>";
         $body .= $recordsByUser->map(function ($record) use ($body) {
