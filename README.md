@@ -5,6 +5,8 @@ Requirements
 - Having a AWS Account
 - Having a MySQL ( or compatible ) RDS DB
 - Having a SQS Queue created
+- PHP 7.1 / Laravel 5.5.
+- Gmail account to send mail
   
 Installation
 ------------
@@ -32,15 +34,6 @@ To be able to consume SQS Queue there is 2 options:
 
 2. In production, you can use Supervisor 
 https://laravel.com/docs/5.5/queues#supervisor-configuration
-
-Now you can change
-
- 
-- I used PHP 7.1 / Laravel 5.5, as it is the latest tech I have used.
-- I used SQS to send mail asynchronously
-- I used Gmail to send mail
-- I use RDS (MariaDB) to store Data ( DynamoDB should have been better for scaling and speed, but make no difference for this exercise)
-
 
 General flow:
 ------------
@@ -81,16 +74,18 @@ $schedule
     ->job(new SendMailDigest())
     ->hourlyAt(0);
 ```
+
+**How to test without receiving emails ?** 
+- You can set an account on mailtrap.io
+
 **What is good in my method**
 - Flexible, you could easily change 1 hour time range to 3 hours
 - Minimalist, 20L in controller, 30L in model, 10L in Job, and 3 lines in scheduler, it is difficult to have a more syntetic and readable code 
-- Scalable and decoupled, if you have a lot of traffic, you can add more workers to process SQS
+- Scalable and decoupled, if you have a lot of traffic, you can add more workers to process Queue, ore more servers
  
 
 **What could be better in my method / Posible improvements**
 - Using DynamoDB to store records ( Faster and scalable )
 - Using a non gmail email. When having  a lot of jobs queued, we may encounter a Google Issue: Too many mails per seconds 
 - Add some tests.
- 
- 
- 
+- We could have used Lambda and serverless architecture, but this sounds like over-engineering
