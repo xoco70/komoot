@@ -45,6 +45,7 @@ General flow:
 
 Let's review the code:
 For the HTTPS subscription, I followed this doc: https://docs.aws.amazon.com/sns/latest/dg/SendMessageToHttp.html
+
 Confirm SNS and insert into DB: https://github.com/xoco70/komoot/blob/master/app/Http/Controllers/NotificationController.php
 
 ```php
@@ -76,7 +77,7 @@ $schedule
 ```
 **What is good in my method**
 - Flexible, you could easily change 1 hour time range to 3 hours
-- Minimalist, 20L in controller, 30L in model, 10L in Job, and 3 lines in scheduler, it is difficult to have a more syntetic code 
+- Minimalist, 20L in controller, 30L in model, 10L in Job, and 3 lines in scheduler, it is difficult to have a more syntetic and readable code 
 - Scalable and decoupled, if you have a lot of traffic, you can add more workers to process SQS
  
 
@@ -84,8 +85,8 @@ $schedule
 - One thing that could be improved is that I send mails async, which is great, because it scales, and it is loosely coupled,  
 but I have no garantees that mails will be sent each hour exactly, I can eventually lose some records 
 **Solution**: I should include a hard time reference of the last processed DB Registry  
-
 - Using a non gmail email. When having  a lot of jobs queued, we may encounter a Google Issue: Too many mails per seconds 
+- Add some tests.
  
  
  

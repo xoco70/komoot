@@ -13,6 +13,7 @@ class MailDigest extends Model
      */
     public static function build()
     {
+        //TODO We should replace Carbon::now() by a time ref
         $recordsByUsers = Record::where('timestamp', '>', Carbon::now()->subHours(1))
             ->orderby('timestamp', 'desc')
             ->get()
@@ -36,7 +37,7 @@ class MailDigest extends Model
         $name = $recordsByUser->get(0)->name;
         $body = "Hi" . " " . $name . ", your friends are active<br/><br/>";
         $body .= $recordsByUser->map(function ($record) use ($body) {
-            return Carbon::parse($record->timestamp)->format('l H:s') . " " . $record->message . "<br/>";
+            return Carbon::parse($record->timestamp)->format('l H:i') . " " . $record->message . "<br/>";
         })->implode('', '<br/>');
         return $body;
     }
