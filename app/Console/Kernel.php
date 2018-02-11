@@ -30,7 +30,8 @@ class Kernel extends ConsoleKernel
     {
         // We put in cache the hourly time of mail digest.
         // This will allow us to send async mails
-        Cache::put('schedule_timestamp', Carbon::now() , 60);
+        $expiresAt = now()->addMinutes(60);
+        Cache::put('schedule_timestamp', now() , $expiresAt);
 
         $digestsByUser = MailDigest::build();
         foreach ($digestsByUser as $email => $digest) {
