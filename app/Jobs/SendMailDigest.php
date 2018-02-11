@@ -13,7 +13,9 @@ class SendMailDigest implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $email, $digest;
+    protected $email;
+    protected $digest;
+
     /**
      * Create a new job instance.
      *
@@ -36,6 +38,5 @@ class SendMailDigest implements ShouldQueue
             $m->from('julien@cappiello.fr', 'Julien Cappiello');
             $m->to($this->email)->subject('Your Friends have been active!');
         });
-
     }
 }
