@@ -39,8 +39,6 @@ class Kernel extends ConsoleKernel
                 ->job(new SendMailDigest($email, $digest))
                 ->hourlyAt(0);
         }
-
-
     }
 
     /**

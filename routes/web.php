@@ -11,6 +11,5 @@
 |
 */
 
-
 Route::post('/confirmSubscription', 'NotificationController@store');
 Route::get('/', 'NotificationController@index');

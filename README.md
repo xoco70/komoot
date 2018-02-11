@@ -39,7 +39,7 @@ General flow:
 ------------
 
 1. Create HTTPS SNS Subscription -> Confirm Sub -> Insert each record in DB
-2. Each Hour, We create a Job that format the mails to send, and add a Queue Item
+2. Each Hour, We store the timestamp in cache, and we use Jobs to asynchronously send mails digest
 
 
 Let's review the code:
@@ -74,6 +74,12 @@ $schedule
     ->job(new SendMailDigest())
     ->hourlyAt(0);
 ```
+
+Why this design?
+---------------
+- I have chose PHP / Laravel because it is the latest tech I have worked, and I like it pretty much
+- I have chosen MySQL over DynamoDB for storing records because MySQL provides me a quick way to use jobs, cache, etc. Maybe not the more effective, but for production, we could change it without spending much time.
+- We use Jobs / Queues to send mail async. As mail sending is a long operation, it should be the way to do it. Besides, we can easily have a failed jobs policy
 
 **How to test without receiving emails ?** 
 - You can set an account on mailtrap.io

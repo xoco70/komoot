@@ -20,9 +20,9 @@ return [
         'key'    => env('AWS_KEY'),
         'secret' => env('AWS_SECRET'),
     ],
-    'region' => env('AWS_REGION', 'us-east-1'),
-    'version' => 'latest',
+    'region'    => env('AWS_REGION', 'us-east-1'),
+    'version'   => 'latest',
     'ua_append' => [
-        'L5MOD/' . AwsServiceProvider::VERSION,
+        'L5MOD/'.AwsServiceProvider::VERSION,
     ],
 ];
