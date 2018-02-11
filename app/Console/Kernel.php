@@ -23,14 +23,15 @@ class Kernel extends ConsoleKernel
     /**
      * Define the application's command schedule.
      *
-     * @param  \Illuminate\Console\Scheduling\Schedule $schedule
+     * @param \Illuminate\Console\Scheduling\Schedule $schedule
+     *
      * @return void
      */
     protected function schedule(Schedule $schedule)
     {
         // We put in cache the hourly time of mail digest.
         // This will allow us to send async mails
-        Cache::put('schedule_timestamp', Carbon::now() , 60);
+        Cache::put('schedule_timestamp', Carbon::now(), 60);
 
         $digestsByUser = MailDigest::build();
         foreach ($digestsByUser as $email => $digest) {
@@ -38,8 +39,6 @@ class Kernel extends ConsoleKernel
                 ->job(new SendMailDigest($email, $digest))
                 ->hourlyAt(0);
         }
-
-
     }
 
     /**
@@ -49,7 +48,7 @@ class Kernel extends ConsoleKernel
      */
     protected function commands()
     {
-        $this->load(__DIR__ . '/Commands');
+        $this->load(__DIR__.'/Commands');
 
         require base_path('routes/console.php');
     }
