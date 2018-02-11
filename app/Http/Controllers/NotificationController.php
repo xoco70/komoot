@@ -14,11 +14,9 @@ class NotificationController extends Controller
     protected function index()
     {
 
-
+        // For test only
         $digestsByUser = MailDigest::build();
         foreach ($digestsByUser as $email => $digest) {
-            dump($email, $digest);
-            dump("=====================");
             dispatch(new SendMailDigest($email, $digest));
         }
     }

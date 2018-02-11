@@ -1,6 +1,11 @@
 Hourly Digest Mails
 ===================
-
+Requirements
+------------
+- Having a AWS Account
+- Having a MySQL ( or compatible ) RDS DB
+- Having a SQS Queue created
+  
 Installation
 ------------
 
@@ -9,6 +14,7 @@ git clone https://github.com/xoco70/komoot.git
 composer install
 cp .env.example .env
 php artisan key:generate
+php artisan migrate
 ```
 Fill the empty values of .env file
 
@@ -82,9 +88,7 @@ $schedule
  
 
 **What could be better in my method / Posible improvements**
-- One thing that could be improved is that I send mails async, which is great, because it scales, and it is loosely coupled,  
-but I have no garantees that mails will be sent each hour exactly, I can eventually lose some records 
-**Solution**: I should include a hard time reference of the last processed DB Registry  
+- Using DynamoDB to store records ( Faster and scalable )
 - Using a non gmail email. When having  a lot of jobs queued, we may encounter a Google Issue: Too many mails per seconds 
 - Add some tests.
  

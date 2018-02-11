@@ -4,8 +4,10 @@ namespace App\Console;
 
 use App\Jobs\SendMailDigest;
 use App\MailDigest;
+use Carbon\Carbon;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Illuminate\Support\Facades\Cache;
 
 class Kernel extends ConsoleKernel
 {
@@ -26,6 +28,10 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+        // We put in cache the hourly time of mail digest.
+        // This will allow us to send async mails
+        Cache::put('schedule_timestamp', Carbon::now() , 60);
+
         $digestsByUser = MailDigest::build();
         foreach ($digestsByUser as $email => $digest) {
             $schedule

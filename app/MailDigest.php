@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Cache;
 
 class MailDigest extends Model
 {
@@ -13,12 +14,11 @@ class MailDigest extends Model
      */
     public static function build()
     {
-        //TODO We should replace Carbon::now() by a time ref
-        $recordsByUsers = Record::where('timestamp', '>', Carbon::now()->subHours(1))
+        $hourlyTimestamp = Cache::get('schedule_timestamp', Carbon::now());
+        $recordsByUsers = Record::where('timestamp', '>', $hourlyTimestamp->subHours(1))
             ->orderby('timestamp', 'desc')
             ->get()
             ->groupBy('email');
-
         $digest = [];
         foreach ($recordsByUsers as $recordsByUser) {
             $email = $recordsByUser->get(0)->email;
