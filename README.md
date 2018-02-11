@@ -39,7 +39,7 @@ General flow:
 ------------
 
 1. Create HTTPS SNS Subscription -> Confirm Sub -> Insert each record in DB
-2. Each Hour, We create a Job that format the mails to send, and add a Queue Item
+2. Each Hour, We store the timestamp in cache, and we use Jobs to asynchronously send mails digest
 
 
 Let's review the code:
