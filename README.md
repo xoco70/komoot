@@ -24,7 +24,7 @@ To be able to consume SQS Queue there is 2 options:
  php artisan queue:listen
  ```
 
-2. In production, you can use Supervisor ( not tested with this work) 
+2. In production, you can use Supervisor 
 https://laravel.com/docs/5.5/queues#supervisor-configuration
 
 Now you can change
@@ -44,7 +44,7 @@ General flow:
 
 
 Let's review the code:
-For the HTTPS subscription, I had to follow this doc: https://docs.aws.amazon.com/sns/latest/dg/SendMessageToHttp.html
+For the HTTPS subscription, I followed this doc: https://docs.aws.amazon.com/sns/latest/dg/SendMessageToHttp.html
 Confirm SNS and insert into DB: https://github.com/xoco70/komoot/blob/master/app/Http/Controllers/NotificationController.php
 
 ```php
@@ -85,10 +85,7 @@ $schedule
 but I have no garantees that mails will be sent each hour exactly, I can eventually lose some records 
 **Solution**: I should include a hard time reference of the last processed DB Registry  
 
-- Right now, we send multiple mails in a single Job. It is not the best thing to do in case of failed ones.
-Ideally, we would like to have 1 mail x job, so if a mail sending is failing, we can retry it independenlty from other mails 
-**Solution**: Done changing code, but it would put a bit more complexity in code 
- 
+- Using a non gmail email. When having  a lot of jobs queued, we may encounter a Google Issue: Too many mails per seconds 
  
  
  

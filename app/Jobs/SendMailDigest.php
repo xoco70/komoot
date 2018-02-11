@@ -2,7 +2,6 @@
 
 namespace App\Jobs;
 
-use App\MailDigest;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -14,29 +13,29 @@ class SendMailDigest implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    protected $email, $digest;
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($email, $digest)
     {
-        //
+        $this->email = $email;
+        $this->digest = $digest;
     }
 
     /**
-     * Send several email with email digest
+     * Execute the job.
      *
      * @return void
      */
     public function handle()
     {
-        $digestsByUser = MailDigest::build();
-        foreach ($digestsByUser as $email => $digest) {
-            Mail::send('emails.digest', ['mailBody' => $digest], function ($m) use ($email, $digest) {
-                $m->from('julien@cappiello.fr', 'Julien Cappiello');
-                $m->to($email)->subject('Your Friends have been active!');
-            });
-        }
+        Mail::send('emails.digest', ['mailBody' => $this->digest], function ($m) {
+            $m->from('julien@cappiello.fr', 'Julien Cappiello');
+            $m->to($this->email)->subject('Your Friends have been active!');
+        });
+
     }
 }

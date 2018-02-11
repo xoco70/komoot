@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\SendMailDigest;
+use App\MailDigest;
 use App\Record;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -12,8 +13,14 @@ class NotificationController extends Controller
 {
     protected function index()
     {
-        // For testing purpose only
-        dispatch(new SendMailDigest());
+
+
+        $digestsByUser = MailDigest::build();
+        foreach ($digestsByUser as $email => $digest) {
+            dump($email, $digest);
+            dump("=====================");
+            dispatch(new SendMailDigest($email, $digest));
+        }
     }
 
     /**

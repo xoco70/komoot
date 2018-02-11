@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Jobs\SendMailDigest;
+use App\MailDigest;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -25,9 +26,14 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule
-            ->job(new SendMailDigest())
-            ->hourlyAt(0);
+        $digestsByUser = MailDigest::build();
+        foreach ($digestsByUser as $email => $digest) {
+            $schedule
+                ->job(new SendMailDigest($email, $digest))
+                ->hourlyAt(0);
+        }
+
+
     }
 
     /**
