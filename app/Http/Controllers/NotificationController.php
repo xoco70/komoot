@@ -17,7 +17,7 @@ class NotificationController extends Controller
 
         // For test only
         $expiresAt = now()->addMinutes(60);
-        Cache::put('schedule_timestamp', now() , $expiresAt);
+        Cache::put('schedule_timestamp', now(), $expiresAt);
 
         $digestsByUser = MailDigest::build();
         foreach ($digestsByUser as $email => $digest) {
