@@ -6,6 +6,7 @@ use App\Jobs\SendMailDigest;
 use App\MailDigest;
 use App\Record;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 
@@ -15,6 +16,9 @@ class NotificationController extends Controller
     {
 
         // For test only
+        $expiresAt = now()->addMinutes(60);
+        Cache::put('schedule_timestamp', now() , $expiresAt);
+
         $digestsByUser = MailDigest::build();
         foreach ($digestsByUser as $email => $digest) {
             dispatch(new SendMailDigest($email, $digest));
